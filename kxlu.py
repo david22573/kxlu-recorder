@@ -35,3 +35,18 @@ def record_playlist(show, duration):
     t = Thread(target=download)
     t.start()
 
+def create_json():
+    import json
+    
+    json_obj = {'djs': []}
+    
+    for k, v in schedules.items():
+        schedule = {k: v}
+        json_obj['djs'].append(schedule)
+        
+    print(json_obj)
+    
+    with open('./schedules.json', 'w+') as f:
+        json.dump(json_obj, f)
+        
+create_json()
