@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from pytz import timezone
 import ffmpeg
@@ -34,3 +35,8 @@ def record_playlist(show, duration):
         os.remove(file_name)
     t = Thread(target=download)
     t.start()
+
+
+# save dictionary to json file
+with open("./schedules.json", 'w+') as json_file:
+    json.dump(schedules, json_file)
