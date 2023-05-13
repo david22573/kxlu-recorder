@@ -4,6 +4,8 @@ import ffmpeg
 from threading import Thread
 from dropbox_api import upload_file
 import os
+from datetime import timedelta
+import json
 
 schedules = dict()
 schedules['melody-fair'] = {'day': 0, 'time': '21:00', 't': 7600}
@@ -17,17 +19,28 @@ schedules['mon-opera'] = {'day': 0, 'time': '18:00', 't': 7600}
 schedules['test3'] = {'day': 0, 'time': '12:30', 't': 3600}
 
 
+def is_dst(dt):
+    return dt.dst() != timedelta(0)
+
+
 def local_now():
-    return datetime.now(timezone('US/Pacific'))
+    now = datetime.now(timezone('US/Pacific'))
+    if is_dst(now):
+        now = now - timedelta(hours=1)
+    return now
 
 
 def record_playlist(show, duration):
+    music_folder = "./music/"
+    if not os.path.exists(music_folder):
+        os.mkdir(music_folder)
+
     td = local_now().strftime("%m_%d_%Y")
 
     def download():
         file_name = f'{show}_{td}.mp3'
-        ffmpeg.input('https://kxlu.streamguys1.com/kxlu-hi',
-                     t=duration).output(file_name).run()
+        (ffmpeg.input('https://kxlu.streamguys1.com/kxlu-hi',
+                      t=duration).output(music_folder+file_name).extra_args('thread_queue_size', '4').run())
         with open(file_name, 'rb') as f:
             file = f.read()
             upload_file(file, show, file_name)
@@ -35,18 +48,13 @@ def record_playlist(show, duration):
     t = Thread(target=download)
     t.start()
 
+
 def create_json():
-    import json
-    
-    json_obj = {'djs': []}
-    
-    for k, v in schedules.items():
-        schedule = {k: v}
-        json_obj['djs'].append(schedule)
-        
-    print(json_obj)
-    
+    json_obj = dict()
     with open('./schedules.json', 'w+') as f:
+        json_obj['djs'] = [{k: schedules[k]} for k in schedules]
+
         json.dump(json_obj, f)
-        
+
+
 create_json()
