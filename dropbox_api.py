@@ -2,18 +2,55 @@ import dropbox
 from dropbox import dropbox_client
 from datetime import datetime
 import json
+import os
 
-app_key = 'w1xmfhioc29bz09'
-app_secret = '0vju2twdrt8ao1v'
+app_key = 'd1xkqiawyfjjc0g'
+app_secret = 'k8uv6ni5asmy7ys'
 
 
-with open('token.json') as f:
-    data = json.load(f)
-    access_token = data['access_token']
-    expires_at = datetime.strptime(data['expires_at'], '%Y-%m-%d %H:%M:%S.%f')
-    refresh_token = data['refresh_token']
-    data['app_key'] = app_key
-    data['app_secret'] = app_secret
+token_path = "./token.json"
+
+
+def create_token():
+    auth_flow3 = dropbox.DropboxOAuth2FlowNoRedirect(app_key,
+                                                     consumer_secret=app_secret,
+                                                     token_access_type='offline',
+                                                     scope=['files.content.read',
+                                                            'files.content.write'],
+                                                     include_granted_scopes='user')
+
+    authorize_url = auth_flow3.start()
+    print("1. Go to: " + authorize_url)
+    print("2. Click \"Allow\" (you might have to log in first).")
+    print("3. Copy the authorization code.")
+    auth_code = input("Enter the authorization code here: ").strip()
+
+    try:
+        oauth_result = auth_flow3.finish(auth_code)
+        with open('token.json', 'w+', encoding='UTF-8') as f:
+            data = dict()
+            data['access_token'] = oauth_result.access_token
+            data['expires_at'] = str(oauth_result.expires_at)
+            data['refresh_token'] = oauth_result.refresh_token
+            json.dump(data, f)
+
+    except Exception as e:
+        print('Error: %s' % (e,))
+        exit(1)
+
+
+# check if token path exists
+if not os.path.exists(token_path):
+    create_token()
+else:
+    with open('token.json') as f:
+        data = json.load(f)
+        access_token = data['access_token']
+        expires_at = datetime.strptime(
+            data['expires_at'], '%Y-%m-%d %H:%M:%S.%f')
+        refresh_token = data['refresh_token']
+        data['app_key'] = app_key
+        data['app_secret'] = app_secret
 
 
 try:
@@ -38,31 +75,3 @@ def upload_file(file, show, file_name):
                 json.dumps(token_handler.token_content)
             print('token refreshed')
         dropbox_api.files_upload(bytes(file), path=f'/{show}/{file_name}')
-
-
-# def create_token():
-#     auth_flow3 = dropbox.DropboxOAuth2FlowNoRedirect(app_key,
-#                                                      consumer_secret=app_secret,
-#                                                      token_access_type='offline',
-#                                                      scope=['files.content.read',
-#                                                             'files.content.write'],
-#                                                      include_granted_scopes='user')
-
-#     authorize_url = auth_flow3.start()
-#     print("1. Go to: " + authorize_url)
-#     print("2. Click \"Allow\" (you might have to log in first).")
-#     print("3. Copy the authorization code.")
-#     auth_code = input("Enter the authorization code here: ").strip()
-
-#     try:
-#         oauth_result = auth_flow3.finish(auth_code)
-#         with open('token.json', 'w+', encoding='UTF-8') as f:
-#             data = dict()
-#             data['access_token'] = oauth_result.access_token
-#             data['expires_at'] = str(oauth_result.expires_at)
-#             data['refresh_token'] = oauth_result.refresh_token
-#             json.dump(data, f)
-
-#     except Exception as e:
-#         print('Error: %s' % (e,))
-#         exit(1)
