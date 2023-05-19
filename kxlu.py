@@ -41,7 +41,7 @@ def record_playlist(show, duration):
         file_name = f'{show}_{td}.mp3'
         (ffmpeg.input('https://kxlu.streamguys1.com/kxlu-hi',
                       t=duration).output(music_folder+file_name).run())
-        with open(file_name, 'rb') as f:
+        with open(music_folder+file_name, 'rb') as f:
             file = f.read()
             upload_file(file, show, file_name)
         os.remove(file_name)
