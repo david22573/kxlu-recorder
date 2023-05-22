@@ -10,7 +10,7 @@ import json
 schedules = dict()
 schedules['melody-fair'] = {'day': 0, 'time': '21:00', 't': 7600}
 schedules['twh'] = {'day': 3, 'time': '22:00', 't': 7600}
-schedules['reggae-show'] = {'day': 5, 'time': '20:00', 't': 10800}
+schedules['reggae-show'] = {'day': 5, 'time': '19:00', 't': 10800}
 schedules['mystery-machine'] = {'day': 4, 'time': '21:00', 't': 7600}
 schedules['serenata-de-trios'] = {'day': 6, 'time': '18:00', 't': 3600}
 schedules['gail'] = {'day': 0, 'time': '06:00', 't': 10800}
