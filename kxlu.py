@@ -18,15 +18,8 @@ schedules['ecliptic'] = {'day': 0, 'time': '09:00', 't': 5400}
 schedules['mon-opera'] = {'day': 0, 'time': '18:00', 't': 7600}
 schedules['test3'] = {'day': 0, 'time': '12:30', 't': 3600}
 
-
-def is_dst(dt):
-    return dt.dst() != timedelta(0)
-
-
 def local_now():
     now = datetime.now(timezone('US/Pacific'))
-    if is_dst(now):
-        now = now - timedelta(hours=1)
     return now
 
 
