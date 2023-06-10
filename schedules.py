@@ -27,7 +27,7 @@ ECLIPTIC = Schedule('ecliptic', 0, '09:00', 5400)
 THE_MESSAGE = Schedule('the-message', 0, '18:00', 7600)
 MELODY_FAIR = Schedule('melody-fair', 0, '20:00', 7320)
 TWH = Schedule('twh', 3, '22:00', 7320)
-REGGAE_SHOW = Schedule('reggae-show', 5, '19:00', 10800)
+REGGAE_SHOW = Schedule('reggae-show', 5, '20:00', 10800)
 MYSTERY_MACHINE = Schedule('mystery-machine', 4, '21:00', 7320)
 SERENATA_DE_TRIOS = Schedule('serenata-de-trios', 6, '18:00', 7320)
 
