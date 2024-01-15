@@ -1,6 +1,4 @@
 class Schedules:
-    __slots__ = ['schedules']
-
     def __init__(self):
         self.schedules = []
 
@@ -9,8 +7,6 @@ class Schedules:
 
 
 class Schedule:
-    __slots__ = ['name', 'day', 'time', 'duration']
-
     def __init__(self, name, day, time, duration):
         self.name = name
         self.day = day
