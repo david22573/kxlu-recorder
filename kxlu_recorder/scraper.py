@@ -20,19 +20,16 @@ def get_site_content():
     return html
 
 
-def sanitize_name(name: str):
-    all_words = re.split(r'\s+', name)
-    return " ".join(all_words)
-
-
 def sanitize_time(time_str: str):
-    schedule_time = [t.strip() for t in time_str.split('-')]
+    day = time_str.split(' ')[0]
+    _time = time_str[len(day):]
+    schedule_time = [t.strip() for t in _time.split('-')]
     schedule_range = []
     for time_range in schedule_time:
         time_obj = datetime.strptime(time_range.strip(), '%I:%M %p')
         clean_time = time_obj.strftime('%H:%M')
         schedule_range.append(clean_time)
-    return tuple(schedule_range) if len(schedule_range) > 1 else schedule_range[0]
+    return (day, schedule_range) if len(schedule_range) > 1 else (day, schedule_range[0])
 
 
 def get_djs():
@@ -47,13 +44,15 @@ def get_djs():
     soup = BeautifulSoup(html_content, 'html.parser')
     schedule_grid = soup.find('section', class_='schedule-grid')
 
-    for schedule_item in schedule_grid.find_all('div', class_='day-item-content'):
-        dj_name = sanitize_name(schedule_item.find('h3').text)
+    for schedule_item in schedule_grid.find_all('div', class_='tooltip-details'):
+        dj_name = schedule_item.find('h4').text
         schedule_time = schedule_item.find('span', class_='time').text
-        djs[dj_name] = sanitize_time(schedule_time.strip()) or 'time'
+        day, schedule_time = sanitize_time(schedule_time)
+        djs[dj_name][day] = [] if dj_name not in djs else djs[dj_name][day]
+        djs[dj_name][day].append(schedule_time)
     return djs
 
 
 djs = get_djs()
-for dj, time in djs.items():
-    print(dj, time)
+print(djs)
+# print(djs['In a Dream with Mystic Pete'])
