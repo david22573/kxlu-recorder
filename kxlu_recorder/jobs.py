@@ -17,13 +17,13 @@ class DJSetScheduler:
         self.la_tz = pytz.timezone('US/Pacific')
         self.schedule = Scheduler(tzinfo=self.la_tz)
         self.day_to_trigger = {
-            0: trigger.Monday,
-            1: trigger.Tuesday,
-            2: trigger.Wednesday,
-            3: trigger.Thursday,
-            4: trigger.Friday,
-            5: trigger.Saturday,
-            6: trigger.Sunday,
+            0: trigger.Sunday,
+            1: trigger.Monday,
+            2: trigger.Tuesday,
+            3: trigger.Wednesday,
+            4: trigger.Thursday,
+            5: trigger.Friday,
+            6: trigger.Saturday,
         }
 
     def add_schedule(self, day, show, time, duration):

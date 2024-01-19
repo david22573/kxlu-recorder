@@ -53,13 +53,12 @@ class Show:
         return f"<Show> ({self.name} - {self.day} - {self.start} - {self.duration})"
 
 
-if __name__ == '__main__':
+def get_shows():
     shows = []
+
     for show, times in show_times.items():
         for day, (start, end) in times.items():
             duration = calculate_duration(start, end)
             shows.append(Show(show, day, start, duration))
 
-    for show in shows:
-        show.record_show()
-        break
+    return shows
