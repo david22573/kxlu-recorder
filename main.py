@@ -1,8 +1,9 @@
-# from jobs import run_scheduler
+from kxlu_recorder.jobs import DJSetScheduler
 
-# run_scheduler()
-# print digger continously
-while True:
-    import time
-    time.sleep(1)
-    print('Digger')
+
+def main():
+    dj_set_scheduler = DJSetScheduler.run_scheduler()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,9 +1,15 @@
-from kxlu import *
 from time import sleep
 from scheduler import Scheduler
 import scheduler.trigger as trigger
 import datetime as dt
 import pytz
+
+
+def record_playlist(show, duration):
+    print(f"Recording playlist for {show} for {duration} minutes")
+    sleep(duration * 60)
+    print(f"Finished recording playlist for {show}")
+    return True
 
 
 class DJSetScheduler:
@@ -42,5 +48,6 @@ class DJSetScheduler:
 
 # Example usage
 if __name__ == "__main__":
+    dj_schedules = []
     dj_set_scheduler = DJSetScheduler()
-    dj_set_scheduler.run_scheduler(schedules.schedules)
+    dj_set_scheduler.run_scheduler(dj_schedules)
