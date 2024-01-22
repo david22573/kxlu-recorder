@@ -2,7 +2,10 @@ import os
 from datetime import datetime, timedelta
 
 from scraper import get_djs
-from kxlu_recorder import PROJECT_ROOT
+
+from . import PROJECT_ROOT
+
+print(PROJECT_ROOT)
 
 
 STREAM_URL = "https://kxlu.streamguys1.com/kxlu-lo"
@@ -50,7 +53,9 @@ class Show:
                   self.duration} -c copy '{file_name}' >/dev/null 2>&1 &""")
 
     def __repr__(self):
-        return f"<Show> ({self.name} - {self.day} - {self.start} - {self.duration})"
+        return f"""
+            <Show> ({self.name} - {self.day} - {self.start} - {self.duration})
+        """
 
 
 def get_shows():
