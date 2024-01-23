@@ -12,3 +12,4 @@ def read_file(category, file):
 
 
 sub_dirs = [x[0] for x in os.walk(f'{PROJECT_ROOT}/data/')][1:]
+print(sub_dirs)

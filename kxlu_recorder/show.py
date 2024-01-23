@@ -3,11 +3,6 @@ from datetime import datetime, timedelta
 
 from scraper import get_djs
 
-from . import PROJECT_ROOT
-
-print(PROJECT_ROOT)
-
-
 STREAM_URL = "https://kxlu.streamguys1.com/kxlu-lo"
 
 show_times = get_djs()
@@ -67,3 +62,6 @@ def get_shows():
             shows.append(Show(show, day, start, duration))
 
     return shows
+
+
+get_shows()
